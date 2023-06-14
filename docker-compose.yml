@@ -1,0 +1,31 @@
+version: '3'
+services:
+  app:
+    container_name: my-apache-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:80
+    networks: 
+      - my-network
+    depends_on:
+      - db
+        
+  db:
+    image: mysql:8.0
+    container_name: my-mysql-container
+    restart: always
+    environment:
+      MYSQL_DATABASE: antudb
+      MYSQL_USER: antu
+      MYSQL_PASSWORD: antu1234
+      MYSQL_ROOT_PASSWORD: antu1234
+    volumes:
+      - ./db_data:/docker-entrypoint-initdb.d/
+    networks:
+      - my-network
+
+
+networks:
+  my-network:
